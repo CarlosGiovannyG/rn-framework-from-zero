@@ -1,0 +1,19 @@
+{
+  "store.walkthrough": {
+    "children": [
+      {
+        "componentName": "image",
+        "props": {
+          "type": "background",
+          "uri": "https://res.cloudinary.com/carlosgiovanny/image/upload/v1665009958/Empresa/app_back_ghzit3.png",
+          "resizeMode": "stretch"
+        },
+        "children": [
+          {
+            "componentName": "walkthrough-view"
+          }
+        ]
+      }
+    ]
+  }
+}

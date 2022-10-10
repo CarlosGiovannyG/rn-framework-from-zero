@@ -1,0 +1,25 @@
+{
+  "baseBranch": "origin/main",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "prettier-fix": {
+      "outputs": []
+    },
+    "turbo:android-start": {
+      "cache": false
+    },
+    "types": {
+      "outputs": ["dist/**/*.d.ts"]
+    }
+  }
+}

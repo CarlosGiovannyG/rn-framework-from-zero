@@ -1,0 +1,15 @@
+{
+  "rootType": "Stack",
+  "initialRouteName": "walkthrough",
+  "prefixes": ["https://rnframework.com", "rnframework://"],
+  "screens": {
+    "walkthrough": {
+      "path": "walkthrough",
+      "options": {
+        "title": "Walkthrough",
+        "headerShown":false
+      },
+      "type": "Component"
+    }
+  }
+}

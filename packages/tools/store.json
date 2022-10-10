@@ -1,0 +1,461 @@
+{
+  "store-form.login": {
+    "name": "store-form.login",
+    "componentType": "Form",
+    "componentProps": [
+      "validationSchema"
+    ],
+    "componentHooks": [
+      "useLinkTo",
+      "useUI",
+      "useLogin"
+    ],
+    "onSubmit": [
+      {
+        "main": "useLogin",
+        "params": [
+          "email",
+          "password"
+        ],
+        "onSuccess": [
+          {
+            "name": "useLinkTo",
+            "defaultProps": {
+              "redirectUrl": "/home"
+            }
+          }
+        ],
+        "onError": [
+          {
+            "name": "useUI",
+            "function": "openModal",
+            "dependsOn": "useLogin",
+            "params": [
+              "email"
+            ],
+            "defaultProps": {
+              "modalContent": "{email} ha entrado correctamente",
+              "redirectUrl": ""
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "store-form.signup": {
+    "name": "store-form.signup",
+    "componentType": "Form",
+    "componentProps": [
+      "validationSchema"
+    ],
+    "componentHooks": [
+      "useLinkTo",
+      "useUI",
+      "useUpdateProfile"
+    ],
+    "onSubmit": [
+      {
+        "main": "useUpdateProfile",
+        "params": [
+          "firstName",
+          "lastName",
+          "documentType",
+          "document",
+          "birthDay"
+        ],
+        "onSuccess": [
+          {
+            "name": "useLinkTo",
+            "defaultProps": {
+              "redirectUrl": "/home"
+            }
+          }
+        ],
+        "onError": [
+          {
+            "name": "useUI",
+            "function": "openModal",
+            "params": [
+              "email"
+            ],
+            "defaultProps": {
+              "modalContent": "Ha ocurrido un error"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "store-form.validate-email": {
+    "name": "store-form.validate-email",
+    "componentType": "Form",
+    "componentProps": [
+      "validationSchema"
+    ],
+    "componentHooks": [
+      "useLinkTo",
+      "useUI",
+      "useOtp"
+    ],
+    "onSubmit": [
+      {
+        "main": "useOtp",
+        "params": [
+          "email"
+        ],
+        "onSuccess": [
+          {
+            "name": "useLinkTo",
+            "defaultProps": {
+              "redirectUrl": "/auth/signup/{email}"
+            }
+          }
+        ],
+        "onError": [
+          {
+            "name": "useUI",
+            "function": "openModal",
+            "dependsOn": "useLogin",
+            "params": [
+              "email"
+            ],
+            "defaultProps": {
+              "modalContent": "Ha ocurrido un error"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "store-form.input": {
+    "name": "store-form.input",
+    "componentType": "Input",
+    "componentHooks": [
+      "useStoreForm"
+    ],
+    "componentProps": [
+      "value"
+    ]
+  },
+  "store-form.submit": {
+    "name": "store-form.submit",
+    "componentType": "Button",
+    "componentProps": [
+      "text"
+    ],
+    "componentHooks": [
+      "useStoreForm"
+    ],
+    "onPress": [
+      {
+        "name": "useStoreForm",
+        "function": "onSubmit"
+      }
+    ]
+  },
+  "use-checkout": {
+    "name": "use-checkout",
+    "componentType": "omni-hook",
+    "fetchOptions": {
+      "query": "orderFormQuery"
+    },
+    "input": {
+      "orderFormId": {
+        "type": "string"
+      }
+    },
+    "parseResponse": {
+      "from": {
+        "orderForm": {
+          "id": "string"
+        }
+      },
+      "to": {
+        "orderFormId": "orderForm.id"
+      }
+    },
+    "exec": [
+      {
+        "main": "useCheckout",
+        "onSuccess": [
+          {
+            "name": "useOrderForm",
+            "function": "setOrderFormId",
+            "params": [
+              "orderFormId"
+            ]
+          }
+        ],
+        "onError": [
+          {
+            "name": "CommerceError",
+            "message": "An orderFormId is not found."
+          }
+        ]
+      }
+    ]
+  },
+  "use-customer": {
+    "name": "use-customer",
+    "componentType": "omni-hook",
+    "fetchOptions": {
+      "query": "getUserProfile"
+    },
+    "parseResponse": {
+      "from": {
+        "getUserProfile": {
+          "firstName": "string"
+        }
+      },
+      "to": {
+        "firstName": "getUserProfile.firstName"
+      }
+    },
+    "exec": [
+      {
+        "name": "AsyncStorage",
+        "function": "getData",
+        "params": [
+          "authToken"
+        ],
+        "conditions": {
+          "If": [
+            {
+              "subject": "",
+              "verb": "is",
+              "object": true,
+              "isValid": {
+                "main": "useCustomer",
+                "onSuccess": [
+                  {
+                    "name": "useOrderForm",
+                    "function": "setOrderFormId",
+                    "params": [
+                      "orderFormId"
+                    ]
+                  }
+                ],
+                "onError": [
+                  {
+                    "name": "CommerceError",
+                    "message": "An orderFormId is not found."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "use-login": {
+    "name": "use-login",
+    "componentType": "omni-hook",
+    "fetchOptions": {
+      "query": "customerAccessTokenCreateMutation",
+      "url": ""
+    },
+    "input": {
+      "email": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      }
+    },
+    "invalidInputMessage": {
+      "message": "An email and password are required to login"
+    },
+    "parseResponse": {
+      "from": {
+        "customerAccessTokenCreate": {
+          "customerAccessToken": {
+            "accessToken": "string",
+            "expiresAt": "string"
+          },
+          "customerUserErrors": {
+            "code": "string",
+            "field": "string",
+            "message": "string"
+          }
+        }
+      },
+      "to": {
+        "accessToken": "customerAccessToken.accessToken"
+      }
+    },
+    "exec": [
+      {
+        "main": "useLogin",
+        "onSuccess": [
+          {
+            "name": "AsyncStorage",
+            "function": "storeData",
+            "dependsOn": "useLogin",
+            "inheritProps": [
+              "accessToken"
+            ],
+            "params": [
+              "authToken",
+              "{accessToken}"
+            ]
+          }
+        ],
+        "onError": [
+          {
+            "name": "CommerceError",
+            "message": "An email and password are required to login"
+          }
+        ]
+      }
+    ],
+    "businessLogic": {
+      "hooks": [
+        "useCustomer",
+        "useCheckout",
+        "useAnalytics"
+      ],
+      "middlewares": [
+        {
+          "name": "useCustomer",
+          "revalidate": true
+        },
+        {
+          "name": "useCheckout",
+          "dependsOn": "useCustomer",
+          "params": [
+            "email"
+          ],
+          "revalidate": true
+        }
+      ]
+    }
+  },
+  "login-view": {
+    "name": "login-view",
+    "componentType": "omni-component",
+    "compose": {
+      "store-form.login": {
+        "children": [
+          {
+            "store-form.input": {
+              "value": "email"
+            }
+          },
+          {
+            "store-form.input": {
+              "value": "password"
+            }
+          },
+          {
+            "store-form.submit": {
+              "text": "Iniciar Sesión"
+            }
+          }
+        ],
+        "props": {
+          "validationSchema": null
+        }
+      }
+    }
+  },
+  "signup-view": {
+    "name": "signup-view",
+    "componentType": "omni-component",
+    "compose": {
+      "store-form.signup": {
+        "children": [
+          {
+            "store-form.input": {
+              "value": "firstName"
+            }
+          },
+          {
+            "store-form.input": {
+              "value": "lastName"
+            }
+          },
+          {
+            "store-form.input": {
+              "value": "email"
+            }
+          },
+          {
+            "store-form.submit": {
+              "text": "Registrarse"
+            }
+          }
+        ],
+        "props": {
+          "validationSchema": null
+        }
+      }
+    }
+  },
+  "profile-view": {
+    "name": "profile-view",
+    "componentType": "omni-component",
+    "compose": {
+      "store-form.update-profile": {
+        "children": [
+          {
+            "store-form.input": {
+              "value": "firstName"
+            }
+          },
+          {
+            "store-form.input": {
+              "value": "lastName"
+            }
+          },
+          {
+            "store-form.select": {
+              "value": "documentType"
+            }
+          },
+          {
+            "store-form.input": {
+              "value": "document"
+            }
+          },
+          {
+            "store-form.input": {
+              "value": "birthDay"
+            }
+          },
+          {
+            "store-form.submit": {
+              "text": "Registrarse"
+            }
+          }
+        ],
+        "props": {
+          "validationSchema": null
+        }
+      }
+    }
+  },
+  "validate-email-view": {
+    "name": "validate-email-view",
+    "componentType": "omni-component",
+    "compose": {
+      "store-form.validate-email": {
+        "children": [
+          {
+            "store-form.input": {
+              "value": "email"
+            }
+          },
+          {
+            "store-form.submit": {
+              "text": "Verificar Correo Electrónico"
+            }
+          }
+        ],
+        "props": {
+          "validationSchema": null
+        }
+      }
+    }
+  }
+}

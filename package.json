@@ -1,0 +1,59 @@
+{
+  "name": "react-native-universal-project",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@react-native-async-storage/async-storage",
+      "**/react",
+      "**/react-dom",
+      "**/react-native",
+      "**/react-native/**",
+      "**/react-native-codegen",
+      "**/react-native-dev-menu",
+      "**/react-native-gesture-handler",
+      "**/react-native-reanimated",
+      "**/react-native-screens",
+      "**/@react-navigation/bottom-tabs",
+      "**/@react-navigation/drawer",
+      "**/@react-navigation/native",
+      "**/@react-navigation/stack",
+      "**/@react-navigation/native-stack",
+      "**/react-native-safe-area-context"
+    ]
+  },
+  "scripts": {
+    "reset": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock",
+    "android:metro": "yarn workspace @my-app/mobile start",
+    "android:start": "yarn workspace @my-app/mobile android",
+    "android:release": "yarn workspace @my-app/mobile android --variant=release --active-arch-only",
+    "android:studio": "yarn workspace @my-app/mobile studio",
+    "ios:metro": "yarn workspace @my-app/mobile start",
+    "ios:start": "yarn workspace @my-app/mobile ios",
+    "ios:xcode": "yarn workspace @my-app/mobile xcode",
+    "ios:pods": "yarn workspace @my-app/mobile pods",
+    "next:start": "yarn workspace @my-app/next dev",
+    "next:build": "yarn workspace @my-app/next build",
+    "next:serve": "yarn workspace @my-app/next start",
+    "lint": "ultra -r lint",
+    "lint:fix": "ultra -r lint:fix",
+    "test": "ultra -r test",
+    "typecheck": "ultra -r typecheck",
+    "turbo:android-start": "turbo run build && yarn android:start"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "@typescript-eslint/parser": "^5.30.0",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react-app": "^6.2.2",
+    "eslint-plugin-react-native": "^4.0.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4",
+    "ultra-runner": "^3.10.5",
+    "turbo": "^1.2.16"
+  }
+}

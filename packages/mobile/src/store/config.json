@@ -1,0 +1,8 @@
+{
+    "variables": {
+        "provider": "vtex",
+        "workspace": "itgrafael", 
+        "domain": "moradoapp.myvtex.com",
+        "graphql": "/_v/private/graphql/v1"
+    }
+}

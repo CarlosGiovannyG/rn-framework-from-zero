@@ -1,0 +1,134 @@
+{
+    "hooks": [
+        {
+            "name": "useLogin",
+            "componentType": "omni-hook",
+            "fetchOptions": {
+                "query": "customerAccessTokenCreateMutation",
+                "url": ""
+            },
+            "invalidInputMessage": {
+                "message": "An email and password are required to login"
+            },
+            "parseResponse": {
+                "from": {
+                    "customerAccessTokenCreate": {
+                        "customerAccessToken": {
+                            "accessToken": {
+                                "type": "string"
+                            },
+                            "expiresAt": {
+                                "type": "string"
+                            },
+                        },
+                    }
+                },
+                "to": {
+                    "accessToken": "customerAccessTokenCreate.customerAccessToken.accessToken",
+                    "expiresAt": "customerAccessTokenCreate.customerAccessToken.expiresAt"
+                }
+            },
+            "exec": [
+                {
+                    "name": "useLogin",
+                    "onSuccess": [
+                        {
+                            "name": "AsyncStorage",
+                            "function": "storeData",
+                            "dependsOn": "useLogin",
+                            "inheritProps": [
+                                "accessToken"
+                            ],
+                            "params": [
+                                "authToken",
+                                "{accessToken}"
+                            ]
+                        }
+                    ],
+                    "onError": [
+                        {
+                            "name": "CommerceError",
+                            "message": "An email and password are required to login"
+                        }
+                    ]
+                }
+            ],
+            "businessLogic": {
+                "hooks": [
+                    "useCustomer",
+                    "useCheckout",
+                    "useAnalytics"
+                ],
+                "middlewares": [
+                    {
+                        "name": "useCustomer",
+                        "revalidate": true
+                    },
+                    {
+                        "name": "useCheckout",
+                        "dependsOn": "useCustomer",
+                        "params": [
+                            "email"
+                        ],
+                        "revalidate": true
+                    }
+                ]
+            }
+        },
+        {
+            "name": "useCustomer",
+            "componentType": "omni-hook",
+            "fetchOptions": {
+                "query": "getCustomerQuery",
+                "url": ""
+            },
+            "invalidInputMessage": {
+                "message": "An email and password are required to login"
+            },
+            "parseResponse": {
+                "from": {
+                    "customer": {
+                        "id": "string",
+                        "firstName": "string",
+                        "lastName": "string",
+                        "displayName": "string",
+                        "email": "string",
+                        "phone": "string",
+                        "tags": "string",
+                        "acceptsMarketing": "string",
+                        "createdAt": "string"
+                    }
+                },
+                "to": {
+                    "id": "customer.id",
+                    "firstName": "customer.firstName",
+                    "lastName": "customer.lastName",
+                    "displayName": "customer.displayName",
+                    "email": "customer.email",
+                    "phone": "customer.phone",
+                    "tags": "customer.tags",
+                    "acceptsMarketing": "customer.acceptsMarketing",
+                    "createdAt": "customer.createdAt"
+                }
+            },
+            "exec": [
+                {
+                    "name": "AsyncStorage",
+                    "function": "getData",
+                    "params": [
+                        "authToken"
+                    ]
+                },
+                {
+                    "name": "useCustomer",
+                    "dependsOn": "AsyncStorage",
+                    "params": [
+                        {
+                            "customerAccessToken": "{AsyncStorage}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

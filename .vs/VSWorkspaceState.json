@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\packages",
+    "\\packages\\mobile",
+    "\\packages\\mobile\\src",
+    "\\packages\\mobile\\src\\store",
+    "\\packages\\mobile\\src\\store\\hooks"
+  ],
+  "SelectedNode": "\\packages\\mobile\\src\\store\\hooks\\hooks.json",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,0 +1,6 @@
+[34m@vercel/commerce-shopify:build[0m: cache hit, replaying output [2m0f0af87416aa16ff[0m
+[34m@vercel/commerce-shopify:build: [0m$ taskr build
+[34m@vercel/commerce-shopify:build: [0m[35m[02:06:05][39m[0m Running with [4m[36mD:\CarlosGiovanny\Empresa\CONOCIENDO\template-rn-framework\packages\shopify\taskfile.js[39m[0m
+[34m@vercel/commerce-shopify:build: [0m[35m[02:06:05][39m[0m Starting [1m[33mbuild[39m[0m
+[34m@vercel/commerce-shopify:build: [0m[35m[02:06:05][39m[0m Compiled src files
+[34m@vercel/commerce-shopify:build: [0m[35m[02:06:05][39m[0m Finished [34m[1mbuild[22m[0m in [32m89ms[39m[0m
